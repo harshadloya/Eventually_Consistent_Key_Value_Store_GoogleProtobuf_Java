@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -17,6 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.zip.DataFormatException;
+
 
 
 public class Controller {
@@ -95,11 +97,52 @@ public class Controller {
 			Bank.BranchMessage message = messageBuilder.build();
 			initialize(message);
 			
+			//testing flow
 			put();//how and where to check for consistency level ?
+			put();//how and where to check for consistency level ?
+
+			//Thread.sleep(1000);
+			//write to other nodes after shutting down any one node
+			//update("branch3","localhost","9092","1","updatedValue1");
+
+			//use this to check consistent read 
+			//Thread.sleep(5000);
+			//read from the above rebooted node
+			read("branch3","localhost",9092,1);
 			
 		}
 		catch(Exception e){e.printStackTrace();}
 		
+	}
+	
+	public static void read(String branchName,String ip,int port,int key){
+	
+		try{
+			
+			Socket socket = new Socket(ip, port);
+			
+			Bank.BranchMessage.Builder messageBuilder = Bank.BranchMessage.newBuilder();
+			Bank.Read.Builder read = Bank.Read.newBuilder()
+					.setKey(key);
+			read.build();
+			messageBuilder.setRead(read);
+			Bank.BranchMessage message = messageBuilder.build();
+
+//			OutputStream os = socket.getOutputStream();
+//			OutputStreamWriter osw = new OutputStreamWriter(os);
+//			BufferedWriter bw = new BufferedWriter(osw);
+//
+//			String number = "retreivesnapshot 2";
+//
+//			String sendMessage = number + "\n";
+//			bw.write(sendMessage);
+//			bw.flush();
+			
+		
+			socket.close();
+		}
+		catch(Exception e){}
+
 	}
 	
 	public static void put(){
@@ -152,7 +195,8 @@ if (start.compareTo(end) > 0) {
 		Bank.Transfer.Builder transfer = Bank.Transfer.newBuilder()
 				.setKey(key)
 				.setValue(stringValue)
-				.setTime(sentDateString);
+				.setTime(sentDateString)
+				.setFlag(1);
 		transfer.build();
 		messageBuilder.setTransfer(transfer);
 		Bank.BranchMessage message = messageBuilder.build();
