@@ -22,25 +22,30 @@ public final class Bank {
     int getBalance();
 
     /**
-     * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+     * <code>uint32 consistencylevel = 2;</code>
+     */
+    int getConsistencylevel();
+
+    /**
+     * <code>repeated .InitBranch.Branch all_branches = 3;</code>
      */
     java.util.List<Bank.InitBranch.Branch> 
         getAllBranchesList();
     /**
-     * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+     * <code>repeated .InitBranch.Branch all_branches = 3;</code>
      */
     Bank.InitBranch.Branch getAllBranches(int index);
     /**
-     * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+     * <code>repeated .InitBranch.Branch all_branches = 3;</code>
      */
     int getAllBranchesCount();
     /**
-     * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+     * <code>repeated .InitBranch.Branch all_branches = 3;</code>
      */
     java.util.List<? extends Bank.InitBranch.BranchOrBuilder> 
         getAllBranchesOrBuilderList();
     /**
-     * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+     * <code>repeated .InitBranch.Branch all_branches = 3;</code>
      */
     Bank.InitBranch.BranchOrBuilder getAllBranchesOrBuilder(
         int index);
@@ -59,6 +64,7 @@ public final class Bank {
     }
     private InitBranch() {
       balance_ = 0;
+      consistencylevel_ = 0;
       allBranches_ = java.util.Collections.emptyList();
     }
 
@@ -95,10 +101,15 @@ public final class Bank {
               balance_ = input.readUInt32();
               break;
             }
-            case 18: {
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+            case 16: {
+
+              consistencylevel_ = input.readUInt32();
+              break;
+            }
+            case 26: {
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
                 allBranches_ = new java.util.ArrayList<Bank.InitBranch.Branch>();
-                mutable_bitField0_ |= 0x00000002;
+                mutable_bitField0_ |= 0x00000004;
               }
               allBranches_.add(
                   input.readMessage(Bank.InitBranch.Branch.parser(), extensionRegistry));
@@ -112,7 +123,7 @@ public final class Bank {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
           allBranches_ = java.util.Collections.unmodifiableList(allBranches_);
         }
         this.unknownFields = unknownFields.build();
@@ -863,35 +874,44 @@ public final class Bank {
       return balance_;
     }
 
-    public static final int ALL_BRANCHES_FIELD_NUMBER = 2;
+    public static final int CONSISTENCYLEVEL_FIELD_NUMBER = 2;
+    private int consistencylevel_;
+    /**
+     * <code>uint32 consistencylevel = 2;</code>
+     */
+    public int getConsistencylevel() {
+      return consistencylevel_;
+    }
+
+    public static final int ALL_BRANCHES_FIELD_NUMBER = 3;
     private java.util.List<Bank.InitBranch.Branch> allBranches_;
     /**
-     * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+     * <code>repeated .InitBranch.Branch all_branches = 3;</code>
      */
     public java.util.List<Bank.InitBranch.Branch> getAllBranchesList() {
       return allBranches_;
     }
     /**
-     * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+     * <code>repeated .InitBranch.Branch all_branches = 3;</code>
      */
     public java.util.List<? extends Bank.InitBranch.BranchOrBuilder> 
         getAllBranchesOrBuilderList() {
       return allBranches_;
     }
     /**
-     * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+     * <code>repeated .InitBranch.Branch all_branches = 3;</code>
      */
     public int getAllBranchesCount() {
       return allBranches_.size();
     }
     /**
-     * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+     * <code>repeated .InitBranch.Branch all_branches = 3;</code>
      */
     public Bank.InitBranch.Branch getAllBranches(int index) {
       return allBranches_.get(index);
     }
     /**
-     * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+     * <code>repeated .InitBranch.Branch all_branches = 3;</code>
      */
     public Bank.InitBranch.BranchOrBuilder getAllBranchesOrBuilder(
         int index) {
@@ -913,8 +933,11 @@ public final class Bank {
       if (balance_ != 0) {
         output.writeUInt32(1, balance_);
       }
+      if (consistencylevel_ != 0) {
+        output.writeUInt32(2, consistencylevel_);
+      }
       for (int i = 0; i < allBranches_.size(); i++) {
-        output.writeMessage(2, allBranches_.get(i));
+        output.writeMessage(3, allBranches_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -928,9 +951,13 @@ public final class Bank {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(1, balance_);
       }
+      if (consistencylevel_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, consistencylevel_);
+      }
       for (int i = 0; i < allBranches_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, allBranches_.get(i));
+          .computeMessageSize(3, allBranches_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -950,6 +977,8 @@ public final class Bank {
       boolean result = true;
       result = result && (getBalance()
           == other.getBalance());
+      result = result && (getConsistencylevel()
+          == other.getConsistencylevel());
       result = result && getAllBranchesList()
           .equals(other.getAllBranchesList());
       result = result && unknownFields.equals(other.unknownFields);
@@ -965,6 +994,8 @@ public final class Bank {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + BALANCE_FIELD_NUMBER;
       hash = (53 * hash) + getBalance();
+      hash = (37 * hash) + CONSISTENCYLEVEL_FIELD_NUMBER;
+      hash = (53 * hash) + getConsistencylevel();
       if (getAllBranchesCount() > 0) {
         hash = (37 * hash) + ALL_BRANCHES_FIELD_NUMBER;
         hash = (53 * hash) + getAllBranchesList().hashCode();
@@ -1101,9 +1132,11 @@ public final class Bank {
         super.clear();
         balance_ = 0;
 
+        consistencylevel_ = 0;
+
         if (allBranchesBuilder_ == null) {
           allBranches_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000004);
         } else {
           allBranchesBuilder_.clear();
         }
@@ -1132,10 +1165,11 @@ public final class Bank {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         result.balance_ = balance_;
+        result.consistencylevel_ = consistencylevel_;
         if (allBranchesBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          if (((bitField0_ & 0x00000004) == 0x00000004)) {
             allBranches_ = java.util.Collections.unmodifiableList(allBranches_);
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000004);
           }
           result.allBranches_ = allBranches_;
         } else {
@@ -1186,11 +1220,14 @@ public final class Bank {
         if (other.getBalance() != 0) {
           setBalance(other.getBalance());
         }
+        if (other.getConsistencylevel() != 0) {
+          setConsistencylevel(other.getConsistencylevel());
+        }
         if (allBranchesBuilder_ == null) {
           if (!other.allBranches_.isEmpty()) {
             if (allBranches_.isEmpty()) {
               allBranches_ = other.allBranches_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000004);
             } else {
               ensureAllBranchesIsMutable();
               allBranches_.addAll(other.allBranches_);
@@ -1203,7 +1240,7 @@ public final class Bank {
               allBranchesBuilder_.dispose();
               allBranchesBuilder_ = null;
               allBranches_ = other.allBranches_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000004);
               allBranchesBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getAllBranchesFieldBuilder() : null;
@@ -1266,12 +1303,38 @@ public final class Bank {
         return this;
       }
 
+      private int consistencylevel_ ;
+      /**
+       * <code>uint32 consistencylevel = 2;</code>
+       */
+      public int getConsistencylevel() {
+        return consistencylevel_;
+      }
+      /**
+       * <code>uint32 consistencylevel = 2;</code>
+       */
+      public Builder setConsistencylevel(int value) {
+        
+        consistencylevel_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 consistencylevel = 2;</code>
+       */
+      public Builder clearConsistencylevel() {
+        
+        consistencylevel_ = 0;
+        onChanged();
+        return this;
+      }
+
       private java.util.List<Bank.InitBranch.Branch> allBranches_ =
         java.util.Collections.emptyList();
       private void ensureAllBranchesIsMutable() {
-        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
           allBranches_ = new java.util.ArrayList<Bank.InitBranch.Branch>(allBranches_);
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000004;
          }
       }
 
@@ -1279,7 +1342,7 @@ public final class Bank {
           Bank.InitBranch.Branch, Bank.InitBranch.Branch.Builder, Bank.InitBranch.BranchOrBuilder> allBranchesBuilder_;
 
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public java.util.List<Bank.InitBranch.Branch> getAllBranchesList() {
         if (allBranchesBuilder_ == null) {
@@ -1289,7 +1352,7 @@ public final class Bank {
         }
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public int getAllBranchesCount() {
         if (allBranchesBuilder_ == null) {
@@ -1299,7 +1362,7 @@ public final class Bank {
         }
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public Bank.InitBranch.Branch getAllBranches(int index) {
         if (allBranchesBuilder_ == null) {
@@ -1309,7 +1372,7 @@ public final class Bank {
         }
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public Builder setAllBranches(
           int index, Bank.InitBranch.Branch value) {
@@ -1326,7 +1389,7 @@ public final class Bank {
         return this;
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public Builder setAllBranches(
           int index, Bank.InitBranch.Branch.Builder builderForValue) {
@@ -1340,7 +1403,7 @@ public final class Bank {
         return this;
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public Builder addAllBranches(Bank.InitBranch.Branch value) {
         if (allBranchesBuilder_ == null) {
@@ -1356,7 +1419,7 @@ public final class Bank {
         return this;
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public Builder addAllBranches(
           int index, Bank.InitBranch.Branch value) {
@@ -1373,7 +1436,7 @@ public final class Bank {
         return this;
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public Builder addAllBranches(
           Bank.InitBranch.Branch.Builder builderForValue) {
@@ -1387,7 +1450,7 @@ public final class Bank {
         return this;
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public Builder addAllBranches(
           int index, Bank.InitBranch.Branch.Builder builderForValue) {
@@ -1401,7 +1464,7 @@ public final class Bank {
         return this;
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public Builder addAllAllBranches(
           java.lang.Iterable<? extends Bank.InitBranch.Branch> values) {
@@ -1416,12 +1479,12 @@ public final class Bank {
         return this;
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public Builder clearAllBranches() {
         if (allBranchesBuilder_ == null) {
           allBranches_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000004);
           onChanged();
         } else {
           allBranchesBuilder_.clear();
@@ -1429,7 +1492,7 @@ public final class Bank {
         return this;
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public Builder removeAllBranches(int index) {
         if (allBranchesBuilder_ == null) {
@@ -1442,14 +1505,14 @@ public final class Bank {
         return this;
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public Bank.InitBranch.Branch.Builder getAllBranchesBuilder(
           int index) {
         return getAllBranchesFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public Bank.InitBranch.BranchOrBuilder getAllBranchesOrBuilder(
           int index) {
@@ -1459,7 +1522,7 @@ public final class Bank {
         }
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public java.util.List<? extends Bank.InitBranch.BranchOrBuilder> 
            getAllBranchesOrBuilderList() {
@@ -1470,14 +1533,14 @@ public final class Bank {
         }
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public Bank.InitBranch.Branch.Builder addAllBranchesBuilder() {
         return getAllBranchesFieldBuilder().addBuilder(
             Bank.InitBranch.Branch.getDefaultInstance());
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public Bank.InitBranch.Branch.Builder addAllBranchesBuilder(
           int index) {
@@ -1485,7 +1548,7 @@ public final class Bank {
             index, Bank.InitBranch.Branch.getDefaultInstance());
       }
       /**
-       * <code>repeated .InitBranch.Branch all_branches = 2;</code>
+       * <code>repeated .InitBranch.Branch all_branches = 3;</code>
        */
       public java.util.List<Bank.InitBranch.Branch.Builder> 
            getAllBranchesBuilderList() {
@@ -1498,7 +1561,7 @@ public final class Bank {
           allBranchesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               Bank.InitBranch.Branch, Bank.InitBranch.Branch.Builder, Bank.InitBranch.BranchOrBuilder>(
                   allBranches_,
-                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  ((bitField0_ & 0x00000004) == 0x00000004),
                   getParentForChildren(),
                   isClean());
           allBranches_ = null;
@@ -2339,6 +2402,928 @@ public final class Bank {
 
   }
 
+  public interface DecisionOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Decision)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>uint32 key = 1;</code>
+     */
+    int getKey();
+
+    /**
+     * <code>string value = 2;</code>
+     */
+    java.lang.String getValue();
+    /**
+     * <code>string value = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getValueBytes();
+
+    /**
+     * <code>string time = 3;</code>
+     */
+    java.lang.String getTime();
+    /**
+     * <code>string time = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getTimeBytes();
+
+    /**
+     * <code>uint32 flag = 4;</code>
+     */
+    int getFlag();
+
+    /**
+     * <code>string decide = 5;</code>
+     */
+    java.lang.String getDecide();
+    /**
+     * <code>string decide = 5;</code>
+     */
+    com.google.protobuf.ByteString
+        getDecideBytes();
+  }
+  /**
+   * Protobuf type {@code Decision}
+   */
+  public  static final class Decision extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:Decision)
+      DecisionOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Decision.newBuilder() to construct.
+    private Decision(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Decision() {
+      key_ = 0;
+      value_ = "";
+      time_ = "";
+      flag_ = 0;
+      decide_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Decision(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+
+              key_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              value_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              time_ = s;
+              break;
+            }
+            case 32: {
+
+              flag_ = input.readUInt32();
+              break;
+            }
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              decide_ = s;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return Bank.internal_static_Decision_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return Bank.internal_static_Decision_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              Bank.Decision.class, Bank.Decision.Builder.class);
+    }
+
+    public static final int KEY_FIELD_NUMBER = 1;
+    private int key_;
+    /**
+     * <code>uint32 key = 1;</code>
+     */
+    public int getKey() {
+      return key_;
+    }
+
+    public static final int VALUE_FIELD_NUMBER = 2;
+    private volatile java.lang.Object value_;
+    /**
+     * <code>string value = 2;</code>
+     */
+    public java.lang.String getValue() {
+      java.lang.Object ref = value_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        value_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string value = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getValueBytes() {
+      java.lang.Object ref = value_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        value_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TIME_FIELD_NUMBER = 3;
+    private volatile java.lang.Object time_;
+    /**
+     * <code>string time = 3;</code>
+     */
+    public java.lang.String getTime() {
+      java.lang.Object ref = time_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        time_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string time = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getTimeBytes() {
+      java.lang.Object ref = time_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        time_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int FLAG_FIELD_NUMBER = 4;
+    private int flag_;
+    /**
+     * <code>uint32 flag = 4;</code>
+     */
+    public int getFlag() {
+      return flag_;
+    }
+
+    public static final int DECIDE_FIELD_NUMBER = 5;
+    private volatile java.lang.Object decide_;
+    /**
+     * <code>string decide = 5;</code>
+     */
+    public java.lang.String getDecide() {
+      java.lang.Object ref = decide_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        decide_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string decide = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getDecideBytes() {
+      java.lang.Object ref = decide_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        decide_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (key_ != 0) {
+        output.writeUInt32(1, key_);
+      }
+      if (!getValueBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, value_);
+      }
+      if (!getTimeBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, time_);
+      }
+      if (flag_ != 0) {
+        output.writeUInt32(4, flag_);
+      }
+      if (!getDecideBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, decide_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (key_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, key_);
+      }
+      if (!getValueBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, value_);
+      }
+      if (!getTimeBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, time_);
+      }
+      if (flag_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, flag_);
+      }
+      if (!getDecideBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, decide_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof Bank.Decision)) {
+        return super.equals(obj);
+      }
+      Bank.Decision other = (Bank.Decision) obj;
+
+      boolean result = true;
+      result = result && (getKey()
+          == other.getKey());
+      result = result && getValue()
+          .equals(other.getValue());
+      result = result && getTime()
+          .equals(other.getTime());
+      result = result && (getFlag()
+          == other.getFlag());
+      result = result && getDecide()
+          .equals(other.getDecide());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getKey();
+      hash = (37 * hash) + VALUE_FIELD_NUMBER;
+      hash = (53 * hash) + getValue().hashCode();
+      hash = (37 * hash) + TIME_FIELD_NUMBER;
+      hash = (53 * hash) + getTime().hashCode();
+      hash = (37 * hash) + FLAG_FIELD_NUMBER;
+      hash = (53 * hash) + getFlag();
+      hash = (37 * hash) + DECIDE_FIELD_NUMBER;
+      hash = (53 * hash) + getDecide().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static Bank.Decision parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Bank.Decision parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Bank.Decision parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Bank.Decision parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Bank.Decision parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Bank.Decision parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Bank.Decision parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Bank.Decision parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Bank.Decision parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static Bank.Decision parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Bank.Decision parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Bank.Decision parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(Bank.Decision prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code Decision}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:Decision)
+        Bank.DecisionOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return Bank.internal_static_Decision_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return Bank.internal_static_Decision_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                Bank.Decision.class, Bank.Decision.Builder.class);
+      }
+
+      // Construct using Bank.Decision.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        key_ = 0;
+
+        value_ = "";
+
+        time_ = "";
+
+        flag_ = 0;
+
+        decide_ = "";
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return Bank.internal_static_Decision_descriptor;
+      }
+
+      public Bank.Decision getDefaultInstanceForType() {
+        return Bank.Decision.getDefaultInstance();
+      }
+
+      public Bank.Decision build() {
+        Bank.Decision result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public Bank.Decision buildPartial() {
+        Bank.Decision result = new Bank.Decision(this);
+        result.key_ = key_;
+        result.value_ = value_;
+        result.time_ = time_;
+        result.flag_ = flag_;
+        result.decide_ = decide_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof Bank.Decision) {
+          return mergeFrom((Bank.Decision)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(Bank.Decision other) {
+        if (other == Bank.Decision.getDefaultInstance()) return this;
+        if (other.getKey() != 0) {
+          setKey(other.getKey());
+        }
+        if (!other.getValue().isEmpty()) {
+          value_ = other.value_;
+          onChanged();
+        }
+        if (!other.getTime().isEmpty()) {
+          time_ = other.time_;
+          onChanged();
+        }
+        if (other.getFlag() != 0) {
+          setFlag(other.getFlag());
+        }
+        if (!other.getDecide().isEmpty()) {
+          decide_ = other.decide_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        Bank.Decision parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (Bank.Decision) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int key_ ;
+      /**
+       * <code>uint32 key = 1;</code>
+       */
+      public int getKey() {
+        return key_;
+      }
+      /**
+       * <code>uint32 key = 1;</code>
+       */
+      public Builder setKey(int value) {
+        
+        key_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 key = 1;</code>
+       */
+      public Builder clearKey() {
+        
+        key_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object value_ = "";
+      /**
+       * <code>string value = 2;</code>
+       */
+      public java.lang.String getValue() {
+        java.lang.Object ref = value_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          value_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string value = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getValueBytes() {
+        java.lang.Object ref = value_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          value_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string value = 2;</code>
+       */
+      public Builder setValue(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        value_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string value = 2;</code>
+       */
+      public Builder clearValue() {
+        
+        value_ = getDefaultInstance().getValue();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string value = 2;</code>
+       */
+      public Builder setValueBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        value_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object time_ = "";
+      /**
+       * <code>string time = 3;</code>
+       */
+      public java.lang.String getTime() {
+        java.lang.Object ref = time_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          time_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string time = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getTimeBytes() {
+        java.lang.Object ref = time_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          time_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string time = 3;</code>
+       */
+      public Builder setTime(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        time_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string time = 3;</code>
+       */
+      public Builder clearTime() {
+        
+        time_ = getDefaultInstance().getTime();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string time = 3;</code>
+       */
+      public Builder setTimeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        time_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int flag_ ;
+      /**
+       * <code>uint32 flag = 4;</code>
+       */
+      public int getFlag() {
+        return flag_;
+      }
+      /**
+       * <code>uint32 flag = 4;</code>
+       */
+      public Builder setFlag(int value) {
+        
+        flag_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 flag = 4;</code>
+       */
+      public Builder clearFlag() {
+        
+        flag_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object decide_ = "";
+      /**
+       * <code>string decide = 5;</code>
+       */
+      public java.lang.String getDecide() {
+        java.lang.Object ref = decide_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          decide_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string decide = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getDecideBytes() {
+        java.lang.Object ref = decide_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          decide_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string decide = 5;</code>
+       */
+      public Builder setDecide(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        decide_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string decide = 5;</code>
+       */
+      public Builder clearDecide() {
+        
+        decide_ = getDefaultInstance().getDecide();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string decide = 5;</code>
+       */
+      public Builder setDecideBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        decide_ = value;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:Decision)
+    }
+
+    // @@protoc_insertion_point(class_scope:Decision)
+    private static final Bank.Decision DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new Bank.Decision();
+    }
+
+    public static Bank.Decision getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<Decision>
+        PARSER = new com.google.protobuf.AbstractParser<Decision>() {
+      public Decision parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new Decision(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Decision> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Decision> getParserForType() {
+      return PARSER;
+    }
+
+    public Bank.Decision getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface HintOrBuilder extends
       // @@protoc_insertion_point(interface_extends:Hint)
       com.google.protobuf.MessageOrBuilder {
@@ -3069,6 +4054,46 @@ public final class Bank {
      * <code>uint32 key = 1;</code>
      */
     int getKey();
+
+    /**
+     * <code>uint32 readflag = 2;</code>
+     */
+    int getReadflag();
+
+    /**
+     * <code>string readmethod = 3;</code>
+     */
+    java.lang.String getReadmethod();
+    /**
+     * <code>string readmethod = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getReadmethodBytes();
+
+    /**
+     * <code>string readbranchname = 4;</code>
+     */
+    java.lang.String getReadbranchname();
+    /**
+     * <code>string readbranchname = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getReadbranchnameBytes();
+
+    /**
+     * <code>string readbranchip = 5;</code>
+     */
+    java.lang.String getReadbranchip();
+    /**
+     * <code>string readbranchip = 5;</code>
+     */
+    com.google.protobuf.ByteString
+        getReadbranchipBytes();
+
+    /**
+     * <code>uint32 readbranchport = 6;</code>
+     */
+    int getReadbranchport();
   }
   /**
    * Protobuf type {@code Read}
@@ -3084,6 +4109,11 @@ public final class Bank {
     }
     private Read() {
       key_ = 0;
+      readflag_ = 0;
+      readmethod_ = "";
+      readbranchname_ = "";
+      readbranchip_ = "";
+      readbranchport_ = 0;
     }
 
     @java.lang.Override
@@ -3119,6 +4149,34 @@ public final class Bank {
               key_ = input.readUInt32();
               break;
             }
+            case 16: {
+
+              readflag_ = input.readUInt32();
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              readmethod_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              readbranchname_ = s;
+              break;
+            }
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              readbranchip_ = s;
+              break;
+            }
+            case 48: {
+
+              readbranchport_ = input.readUInt32();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -3152,6 +4210,126 @@ public final class Bank {
       return key_;
     }
 
+    public static final int READFLAG_FIELD_NUMBER = 2;
+    private int readflag_;
+    /**
+     * <code>uint32 readflag = 2;</code>
+     */
+    public int getReadflag() {
+      return readflag_;
+    }
+
+    public static final int READMETHOD_FIELD_NUMBER = 3;
+    private volatile java.lang.Object readmethod_;
+    /**
+     * <code>string readmethod = 3;</code>
+     */
+    public java.lang.String getReadmethod() {
+      java.lang.Object ref = readmethod_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        readmethod_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string readmethod = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getReadmethodBytes() {
+      java.lang.Object ref = readmethod_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        readmethod_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int READBRANCHNAME_FIELD_NUMBER = 4;
+    private volatile java.lang.Object readbranchname_;
+    /**
+     * <code>string readbranchname = 4;</code>
+     */
+    public java.lang.String getReadbranchname() {
+      java.lang.Object ref = readbranchname_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        readbranchname_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string readbranchname = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getReadbranchnameBytes() {
+      java.lang.Object ref = readbranchname_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        readbranchname_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int READBRANCHIP_FIELD_NUMBER = 5;
+    private volatile java.lang.Object readbranchip_;
+    /**
+     * <code>string readbranchip = 5;</code>
+     */
+    public java.lang.String getReadbranchip() {
+      java.lang.Object ref = readbranchip_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        readbranchip_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string readbranchip = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getReadbranchipBytes() {
+      java.lang.Object ref = readbranchip_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        readbranchip_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int READBRANCHPORT_FIELD_NUMBER = 6;
+    private int readbranchport_;
+    /**
+     * <code>uint32 readbranchport = 6;</code>
+     */
+    public int getReadbranchport() {
+      return readbranchport_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -3167,6 +4345,21 @@ public final class Bank {
       if (key_ != 0) {
         output.writeUInt32(1, key_);
       }
+      if (readflag_ != 0) {
+        output.writeUInt32(2, readflag_);
+      }
+      if (!getReadmethodBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, readmethod_);
+      }
+      if (!getReadbranchnameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, readbranchname_);
+      }
+      if (!getReadbranchipBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, readbranchip_);
+      }
+      if (readbranchport_ != 0) {
+        output.writeUInt32(6, readbranchport_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -3178,6 +4371,23 @@ public final class Bank {
       if (key_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(1, key_);
+      }
+      if (readflag_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, readflag_);
+      }
+      if (!getReadmethodBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, readmethod_);
+      }
+      if (!getReadbranchnameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, readbranchname_);
+      }
+      if (!getReadbranchipBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, readbranchip_);
+      }
+      if (readbranchport_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(6, readbranchport_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3197,6 +4407,16 @@ public final class Bank {
       boolean result = true;
       result = result && (getKey()
           == other.getKey());
+      result = result && (getReadflag()
+          == other.getReadflag());
+      result = result && getReadmethod()
+          .equals(other.getReadmethod());
+      result = result && getReadbranchname()
+          .equals(other.getReadbranchname());
+      result = result && getReadbranchip()
+          .equals(other.getReadbranchip());
+      result = result && (getReadbranchport()
+          == other.getReadbranchport());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -3210,6 +4430,16 @@ public final class Bank {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + KEY_FIELD_NUMBER;
       hash = (53 * hash) + getKey();
+      hash = (37 * hash) + READFLAG_FIELD_NUMBER;
+      hash = (53 * hash) + getReadflag();
+      hash = (37 * hash) + READMETHOD_FIELD_NUMBER;
+      hash = (53 * hash) + getReadmethod().hashCode();
+      hash = (37 * hash) + READBRANCHNAME_FIELD_NUMBER;
+      hash = (53 * hash) + getReadbranchname().hashCode();
+      hash = (37 * hash) + READBRANCHIP_FIELD_NUMBER;
+      hash = (53 * hash) + getReadbranchip().hashCode();
+      hash = (37 * hash) + READBRANCHPORT_FIELD_NUMBER;
+      hash = (53 * hash) + getReadbranchport();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3341,6 +4571,16 @@ public final class Bank {
         super.clear();
         key_ = 0;
 
+        readflag_ = 0;
+
+        readmethod_ = "";
+
+        readbranchname_ = "";
+
+        readbranchip_ = "";
+
+        readbranchport_ = 0;
+
         return this;
       }
 
@@ -3364,6 +4604,11 @@ public final class Bank {
       public Bank.Read buildPartial() {
         Bank.Read result = new Bank.Read(this);
         result.key_ = key_;
+        result.readflag_ = readflag_;
+        result.readmethod_ = readmethod_;
+        result.readbranchname_ = readbranchname_;
+        result.readbranchip_ = readbranchip_;
+        result.readbranchport_ = readbranchport_;
         onBuilt();
         return result;
       }
@@ -3407,6 +4652,24 @@ public final class Bank {
         if (other == Bank.Read.getDefaultInstance()) return this;
         if (other.getKey() != 0) {
           setKey(other.getKey());
+        }
+        if (other.getReadflag() != 0) {
+          setReadflag(other.getReadflag());
+        }
+        if (!other.getReadmethod().isEmpty()) {
+          readmethod_ = other.readmethod_;
+          onChanged();
+        }
+        if (!other.getReadbranchname().isEmpty()) {
+          readbranchname_ = other.readbranchname_;
+          onChanged();
+        }
+        if (!other.getReadbranchip().isEmpty()) {
+          readbranchip_ = other.readbranchip_;
+          onChanged();
+        }
+        if (other.getReadbranchport() != 0) {
+          setReadbranchport(other.getReadbranchport());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3457,6 +4720,265 @@ public final class Bank {
       public Builder clearKey() {
         
         key_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int readflag_ ;
+      /**
+       * <code>uint32 readflag = 2;</code>
+       */
+      public int getReadflag() {
+        return readflag_;
+      }
+      /**
+       * <code>uint32 readflag = 2;</code>
+       */
+      public Builder setReadflag(int value) {
+        
+        readflag_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 readflag = 2;</code>
+       */
+      public Builder clearReadflag() {
+        
+        readflag_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object readmethod_ = "";
+      /**
+       * <code>string readmethod = 3;</code>
+       */
+      public java.lang.String getReadmethod() {
+        java.lang.Object ref = readmethod_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          readmethod_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string readmethod = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getReadmethodBytes() {
+        java.lang.Object ref = readmethod_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          readmethod_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string readmethod = 3;</code>
+       */
+      public Builder setReadmethod(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        readmethod_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string readmethod = 3;</code>
+       */
+      public Builder clearReadmethod() {
+        
+        readmethod_ = getDefaultInstance().getReadmethod();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string readmethod = 3;</code>
+       */
+      public Builder setReadmethodBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        readmethod_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object readbranchname_ = "";
+      /**
+       * <code>string readbranchname = 4;</code>
+       */
+      public java.lang.String getReadbranchname() {
+        java.lang.Object ref = readbranchname_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          readbranchname_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string readbranchname = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getReadbranchnameBytes() {
+        java.lang.Object ref = readbranchname_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          readbranchname_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string readbranchname = 4;</code>
+       */
+      public Builder setReadbranchname(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        readbranchname_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string readbranchname = 4;</code>
+       */
+      public Builder clearReadbranchname() {
+        
+        readbranchname_ = getDefaultInstance().getReadbranchname();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string readbranchname = 4;</code>
+       */
+      public Builder setReadbranchnameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        readbranchname_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object readbranchip_ = "";
+      /**
+       * <code>string readbranchip = 5;</code>
+       */
+      public java.lang.String getReadbranchip() {
+        java.lang.Object ref = readbranchip_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          readbranchip_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string readbranchip = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getReadbranchipBytes() {
+        java.lang.Object ref = readbranchip_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          readbranchip_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string readbranchip = 5;</code>
+       */
+      public Builder setReadbranchip(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        readbranchip_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string readbranchip = 5;</code>
+       */
+      public Builder clearReadbranchip() {
+        
+        readbranchip_ = getDefaultInstance().getReadbranchip();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string readbranchip = 5;</code>
+       */
+      public Builder setReadbranchipBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        readbranchip_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int readbranchport_ ;
+      /**
+       * <code>uint32 readbranchport = 6;</code>
+       */
+      public int getReadbranchport() {
+        return readbranchport_;
+      }
+      /**
+       * <code>uint32 readbranchport = 6;</code>
+       */
+      public Builder setReadbranchport(int value) {
+        
+        readbranchport_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 readbranchport = 6;</code>
+       */
+      public Builder clearReadbranchport() {
+        
+        readbranchport_ = 0;
         onChanged();
         return this;
       }
@@ -3552,6 +5074,19 @@ public final class Bank {
      */
     Bank.ReadOrBuilder getReadOrBuilder();
 
+    /**
+     * <code>.Decision decision = 4;</code>
+     */
+    boolean hasDecision();
+    /**
+     * <code>.Decision decision = 4;</code>
+     */
+    Bank.Decision getDecision();
+    /**
+     * <code>.Decision decision = 4;</code>
+     */
+    Bank.DecisionOrBuilder getDecisionOrBuilder();
+
     public Bank.BranchMessage.BranchMessageCase getBranchMessageCase();
   }
   /**
@@ -3639,6 +5174,20 @@ public final class Bank {
               branchMessageCase_ = 3;
               break;
             }
+            case 34: {
+              Bank.Decision.Builder subBuilder = null;
+              if (branchMessageCase_ == 4) {
+                subBuilder = ((Bank.Decision) branchMessage_).toBuilder();
+              }
+              branchMessage_ =
+                  input.readMessage(Bank.Decision.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((Bank.Decision) branchMessage_);
+                branchMessage_ = subBuilder.buildPartial();
+              }
+              branchMessageCase_ = 4;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -3670,6 +5219,7 @@ public final class Bank {
       INIT_BRANCH(1),
       TRANSFER(2),
       READ(3),
+      DECISION(4),
       BRANCHMESSAGE_NOT_SET(0);
       private final int value;
       private BranchMessageCase(int value) {
@@ -3688,6 +5238,7 @@ public final class Bank {
           case 1: return INIT_BRANCH;
           case 2: return TRANSFER;
           case 3: return READ;
+          case 4: return DECISION;
           case 0: return BRANCHMESSAGE_NOT_SET;
           default: return null;
         }
@@ -3781,6 +5332,32 @@ public final class Bank {
       return Bank.Read.getDefaultInstance();
     }
 
+    public static final int DECISION_FIELD_NUMBER = 4;
+    /**
+     * <code>.Decision decision = 4;</code>
+     */
+    public boolean hasDecision() {
+      return branchMessageCase_ == 4;
+    }
+    /**
+     * <code>.Decision decision = 4;</code>
+     */
+    public Bank.Decision getDecision() {
+      if (branchMessageCase_ == 4) {
+         return (Bank.Decision) branchMessage_;
+      }
+      return Bank.Decision.getDefaultInstance();
+    }
+    /**
+     * <code>.Decision decision = 4;</code>
+     */
+    public Bank.DecisionOrBuilder getDecisionOrBuilder() {
+      if (branchMessageCase_ == 4) {
+         return (Bank.Decision) branchMessage_;
+      }
+      return Bank.Decision.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -3802,6 +5379,9 @@ public final class Bank {
       if (branchMessageCase_ == 3) {
         output.writeMessage(3, (Bank.Read) branchMessage_);
       }
+      if (branchMessageCase_ == 4) {
+        output.writeMessage(4, (Bank.Decision) branchMessage_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -3821,6 +5401,10 @@ public final class Bank {
       if (branchMessageCase_ == 3) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, (Bank.Read) branchMessage_);
+      }
+      if (branchMessageCase_ == 4) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, (Bank.Decision) branchMessage_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3854,6 +5438,10 @@ public final class Bank {
           result = result && getRead()
               .equals(other.getRead());
           break;
+        case 4:
+          result = result && getDecision()
+              .equals(other.getDecision());
+          break;
         case 0:
         default:
       }
@@ -3880,6 +5468,10 @@ public final class Bank {
         case 3:
           hash = (37 * hash) + READ_FIELD_NUMBER;
           hash = (53 * hash) + getRead().hashCode();
+          break;
+        case 4:
+          hash = (37 * hash) + DECISION_FIELD_NUMBER;
+          hash = (53 * hash) + getDecision().hashCode();
           break;
         case 0:
         default:
@@ -4058,6 +5650,13 @@ public final class Bank {
             result.branchMessage_ = readBuilder_.build();
           }
         }
+        if (branchMessageCase_ == 4) {
+          if (decisionBuilder_ == null) {
+            result.branchMessage_ = branchMessage_;
+          } else {
+            result.branchMessage_ = decisionBuilder_.build();
+          }
+        }
         result.branchMessageCase_ = branchMessageCase_;
         onBuilt();
         return result;
@@ -4111,6 +5710,10 @@ public final class Bank {
           }
           case READ: {
             mergeRead(other.getRead());
+            break;
+          }
+          case DECISION: {
+            mergeDecision(other.getDecision());
             break;
           }
           case BRANCHMESSAGE_NOT_SET: {
@@ -4566,6 +6169,142 @@ public final class Bank {
         onChanged();;
         return readBuilder_;
       }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          Bank.Decision, Bank.Decision.Builder, Bank.DecisionOrBuilder> decisionBuilder_;
+      /**
+       * <code>.Decision decision = 4;</code>
+       */
+      public boolean hasDecision() {
+        return branchMessageCase_ == 4;
+      }
+      /**
+       * <code>.Decision decision = 4;</code>
+       */
+      public Bank.Decision getDecision() {
+        if (decisionBuilder_ == null) {
+          if (branchMessageCase_ == 4) {
+            return (Bank.Decision) branchMessage_;
+          }
+          return Bank.Decision.getDefaultInstance();
+        } else {
+          if (branchMessageCase_ == 4) {
+            return decisionBuilder_.getMessage();
+          }
+          return Bank.Decision.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.Decision decision = 4;</code>
+       */
+      public Builder setDecision(Bank.Decision value) {
+        if (decisionBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          branchMessage_ = value;
+          onChanged();
+        } else {
+          decisionBuilder_.setMessage(value);
+        }
+        branchMessageCase_ = 4;
+        return this;
+      }
+      /**
+       * <code>.Decision decision = 4;</code>
+       */
+      public Builder setDecision(
+          Bank.Decision.Builder builderForValue) {
+        if (decisionBuilder_ == null) {
+          branchMessage_ = builderForValue.build();
+          onChanged();
+        } else {
+          decisionBuilder_.setMessage(builderForValue.build());
+        }
+        branchMessageCase_ = 4;
+        return this;
+      }
+      /**
+       * <code>.Decision decision = 4;</code>
+       */
+      public Builder mergeDecision(Bank.Decision value) {
+        if (decisionBuilder_ == null) {
+          if (branchMessageCase_ == 4 &&
+              branchMessage_ != Bank.Decision.getDefaultInstance()) {
+            branchMessage_ = Bank.Decision.newBuilder((Bank.Decision) branchMessage_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            branchMessage_ = value;
+          }
+          onChanged();
+        } else {
+          if (branchMessageCase_ == 4) {
+            decisionBuilder_.mergeFrom(value);
+          }
+          decisionBuilder_.setMessage(value);
+        }
+        branchMessageCase_ = 4;
+        return this;
+      }
+      /**
+       * <code>.Decision decision = 4;</code>
+       */
+      public Builder clearDecision() {
+        if (decisionBuilder_ == null) {
+          if (branchMessageCase_ == 4) {
+            branchMessageCase_ = 0;
+            branchMessage_ = null;
+            onChanged();
+          }
+        } else {
+          if (branchMessageCase_ == 4) {
+            branchMessageCase_ = 0;
+            branchMessage_ = null;
+          }
+          decisionBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.Decision decision = 4;</code>
+       */
+      public Bank.Decision.Builder getDecisionBuilder() {
+        return getDecisionFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.Decision decision = 4;</code>
+       */
+      public Bank.DecisionOrBuilder getDecisionOrBuilder() {
+        if ((branchMessageCase_ == 4) && (decisionBuilder_ != null)) {
+          return decisionBuilder_.getMessageOrBuilder();
+        } else {
+          if (branchMessageCase_ == 4) {
+            return (Bank.Decision) branchMessage_;
+          }
+          return Bank.Decision.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.Decision decision = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          Bank.Decision, Bank.Decision.Builder, Bank.DecisionOrBuilder> 
+          getDecisionFieldBuilder() {
+        if (decisionBuilder_ == null) {
+          if (!(branchMessageCase_ == 4)) {
+            branchMessage_ = Bank.Decision.getDefaultInstance();
+          }
+          decisionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              Bank.Decision, Bank.Decision.Builder, Bank.DecisionOrBuilder>(
+                  (Bank.Decision) branchMessage_,
+                  getParentForChildren(),
+                  isClean());
+          branchMessage_ = null;
+        }
+        branchMessageCase_ = 4;
+        onChanged();;
+        return decisionBuilder_;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
@@ -4631,6 +6370,11 @@ public final class Bank {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_Transfer_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_Decision_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_Decision_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Hint_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -4654,17 +6398,23 @@ public final class Bank {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\nbank.proto\"y\n\nInitBranch\022\017\n\007balance\030\001 " +
-      "\001(\r\022(\n\014all_branches\030\002 \003(\0132\022.InitBranch.B" +
-      "ranch\0320\n\006Branch\022\014\n\004name\030\001 \001(\t\022\n\n\002ip\030\002 \001(" +
-      "\t\022\014\n\004port\030\003 \001(\r\"B\n\010Transfer\022\013\n\003key\030\001 \001(\r" +
-      "\022\r\n\005value\030\002 \001(\t\022\014\n\004time\030\003 \001(\t\022\014\n\004flag\030\004 " +
-      "\001(\r\".\n\004Hint\022\014\n\004name\030\001 \001(\t\022\n\n\002ip\030\002 \001(\t\022\014\n" +
-      "\004port\030\003 \001(\r\"\023\n\004Read\022\013\n\003key\030\001 \001(\r\"{\n\rBran" +
-      "chMessage\022\"\n\013init_branch\030\001 \001(\0132\013.InitBra" +
-      "nchH\000\022\035\n\010transfer\030\002 \001(\0132\t.TransferH\000\022\025\n\004" +
-      "read\030\003 \001(\0132\005.ReadH\000B\020\n\016branch_messageb\006p",
-      "roto3"
+      "\n\nbank.proto\"\223\001\n\nInitBranch\022\017\n\007balance\030\001" +
+      " \001(\r\022\030\n\020consistencylevel\030\002 \001(\r\022(\n\014all_br" +
+      "anches\030\003 \003(\0132\022.InitBranch.Branch\0320\n\006Bran" +
+      "ch\022\014\n\004name\030\001 \001(\t\022\n\n\002ip\030\002 \001(\t\022\014\n\004port\030\003 \001" +
+      "(\r\"B\n\010Transfer\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001" +
+      "(\t\022\014\n\004time\030\003 \001(\t\022\014\n\004flag\030\004 \001(\r\"R\n\010Decisi" +
+      "on\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\t\022\014\n\004time\030\003" +
+      " \001(\t\022\014\n\004flag\030\004 \001(\r\022\016\n\006decide\030\005 \001(\t\".\n\004Hi" +
+      "nt\022\014\n\004name\030\001 \001(\t\022\n\n\002ip\030\002 \001(\t\022\014\n\004port\030\003 \001" +
+      "(\r\"\177\n\004Read\022\013\n\003key\030\001 \001(\r\022\020\n\010readflag\030\002 \001(",
+      "\r\022\022\n\nreadmethod\030\003 \001(\t\022\026\n\016readbranchname\030" +
+      "\004 \001(\t\022\024\n\014readbranchip\030\005 \001(\t\022\026\n\016readbranc" +
+      "hport\030\006 \001(\r\"\232\001\n\rBranchMessage\022\"\n\013init_br" +
+      "anch\030\001 \001(\0132\013.InitBranchH\000\022\035\n\010transfer\030\002 " +
+      "\001(\0132\t.TransferH\000\022\025\n\004read\030\003 \001(\0132\005.ReadH\000\022" +
+      "\035\n\010decision\030\004 \001(\0132\t.DecisionH\000B\020\n\016branch" +
+      "_messageb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -4683,7 +6433,7 @@ public final class Bank {
     internal_static_InitBranch_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_InitBranch_descriptor,
-        new java.lang.String[] { "Balance", "AllBranches", });
+        new java.lang.String[] { "Balance", "Consistencylevel", "AllBranches", });
     internal_static_InitBranch_Branch_descriptor =
       internal_static_InitBranch_descriptor.getNestedTypes().get(0);
     internal_static_InitBranch_Branch_fieldAccessorTable = new
@@ -4696,24 +6446,30 @@ public final class Bank {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Transfer_descriptor,
         new java.lang.String[] { "Key", "Value", "Time", "Flag", });
-    internal_static_Hint_descriptor =
+    internal_static_Decision_descriptor =
       getDescriptor().getMessageTypes().get(2);
+    internal_static_Decision_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_Decision_descriptor,
+        new java.lang.String[] { "Key", "Value", "Time", "Flag", "Decide", });
+    internal_static_Hint_descriptor =
+      getDescriptor().getMessageTypes().get(3);
     internal_static_Hint_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Hint_descriptor,
         new java.lang.String[] { "Name", "Ip", "Port", });
     internal_static_Read_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_Read_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Read_descriptor,
-        new java.lang.String[] { "Key", });
+        new java.lang.String[] { "Key", "Readflag", "Readmethod", "Readbranchname", "Readbranchip", "Readbranchport", });
     internal_static_BranchMessage_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_BranchMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_BranchMessage_descriptor,
-        new java.lang.String[] { "InitBranch", "Transfer", "Read", "BranchMessage", });
+        new java.lang.String[] { "InitBranch", "Transfer", "Read", "Decision", "BranchMessage", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

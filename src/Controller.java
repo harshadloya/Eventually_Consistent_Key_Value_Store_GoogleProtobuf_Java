@@ -1,23 +1,17 @@
-import java.io.BufferedWriter;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.InetAddress;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
-import java.util.zip.DataFormatException;
 
 
 
@@ -32,18 +26,19 @@ public class Controller {
 	private static String consistentString = null;
 	private static ArrayList<String> mapValue = new ArrayList<String>();
     public static Map<Integer,ArrayList<String>> consistentMap = new HashMap<Integer,ArrayList<String>>();
-
+    public static int consistency = 0;
 	
 	public static void main(String args[]) {
 		System.out.println("Client started...");
 
-		if (args.length != 2) {
+		if (args.length < 3) {
 			System.out
-					.println("Arguments missing: \n./branch <brancname> <portnumber>");
+					.println("Minimum Arguments missing ");
 			return;
 		}
 		consistency_level = args[0];
 		String fileName = args[1];
+		String operation = args[2];
 		
 		String branchName = null;
 		String ipAddress = null;
@@ -61,10 +56,10 @@ public class Controller {
 
 			String line = null;
 //			System.out.println("Printing lines in branch text file");
-			Bank.InitBranch.Builder initBranch = Bank.InitBranch.newBuilder();
+			Bank.InitBranch.Builder initBranch = Bank.InitBranch.newBuilder().setConsistencylevel(Integer.parseInt(consistency_level));
 			Bank.BranchMessage.Builder messageBuilder = Bank.BranchMessage
 					.newBuilder();
-
+			
 			while ((line = fp.readLine()) != null) {
 
 				// System.out.println(line);
@@ -95,57 +90,83 @@ public class Controller {
 			}//while
 			messageBuilder.setInitBranch(initBranch);
 			Bank.BranchMessage message = messageBuilder.build();
-			initialize(message);
 			
+/*			int hasConsistency = checkConsistency();
+			if( (hasConsistency < Integer.parseInt(consistency_level))){
+				System.out.println(hasConsistency + " Exiting !! Servers are down !!" + consistency_level);
+				System.exit(0);
+			}
+	*/		
+			if(operation.equals("init")){
+				initialize(message);
+			}
+			
+			if(operation.equals("put")){
 			//testing flow
-			put();//how and where to check for consistency level ?
-			put();//how and where to check for consistency level ?
-
-			//Thread.sleep(1000);
+				int putKey = Integer.parseInt(args[3]);
+				String putValue = args[4];
+				put(putKey,putValue);//how and where to check for consistency level ?
+			}
+				
+				//System.out.println("first update thread STARTED----");
+//			Thread.sleep(5000);
+			
 			//write to other nodes after shutting down any one node
 			//update("branch3","localhost","9092","1","updatedValue1");
-
+			if(operation.equals("update")){
+				int updateKey = Integer.parseInt(args[3]);
+				update(updateKey,args[4]);
+			}
 			//use this to check consistent read 
+				//System.out.println("second read thread STARTinig----");
 			//Thread.sleep(5000);
 			//read from the above rebooted node
-			read("branch3","localhost",9092,1);
+			//System.out.println("start read Controller command :: to the branch which was down when update was sent");
+			if(operation.equals("read")){
+				String readBranch = args[3];
+				String readIp = args[4];
+				int readPort = Integer.parseInt(args[5]);
+				int readKey = Integer.parseInt(args[6]);
+				read(readBranch,readIp,readPort,readKey);
+			}
 			
 		}
 		catch(Exception e){e.printStackTrace();}
 		
 	}
-	
-	public static void read(String branchName,String ip,int port,int key){
-	
-		try{
-			
-			Socket socket = new Socket(ip, port);
-			
-			Bank.BranchMessage.Builder messageBuilder = Bank.BranchMessage.newBuilder();
-			Bank.Read.Builder read = Bank.Read.newBuilder()
-					.setKey(key);
-			read.build();
-			messageBuilder.setRead(read);
-			Bank.BranchMessage message = messageBuilder.build();
+/*	
+	public static int checkConsistency(){
+		int localConsistency = 0;
+		System.out.println("Checking Consistency !! ");
+		for (Branches branch : branchesList) {
+				try {
+					socket = new Socket(branch.getIp(), branch.getPort());
+					localConsistency = consistency++;
+					System.out.println("inside for loop checking consistency..."+consistency);
 
-//			OutputStream os = socket.getOutputStream();
-//			OutputStreamWriter osw = new OutputStreamWriter(os);
-//			BufferedWriter bw = new BufferedWriter(osw);
-//
-//			String number = "retreivesnapshot 2";
-//
-//			String sendMessage = number + "\n";
-//			bw.write(sendMessage);
-//			bw.flush();
-			
+				}
+				catch(IOException e)
+				{
+					System.out.println("==> Initialize Server not running : "+branch.getIp() + ":"+branch.getPort());
+				}
+				finally{
+					try{					
+						socket.close();
+
+					}
+					catch(Exception e){}
+				}
 		
-			socket.close();
-		}
-		catch(Exception e){}
-
-	}
 	
-	public static void put(){
+	}
+		
+		System.out.println(localConsistency + " returning checking consistency..."+consistency);
+		return consistency;
+
+		
+	}
+	*/
+	public static void update(int updateKey,String updatedValue){
 		
 		try {
 
@@ -153,39 +174,21 @@ public class Controller {
 		String toBranchName = getRandomBranch.getName();
 		String toIpAddress = getRandomBranch.getIp();
 		int toPort = getRandomBranch.getPort();
-		System.out.println("Chosen Coordinator-" + toPort + " : "+ toBranchName);
+		System.out.println("==> Update Chosen Coordinator - - > " + toPort + " : "+ toBranchName);
 		Timestamp sentTime = new Timestamp(new Date().getTime());
-//	    Thread.sleep(1000);
-		Timestamp timestamp2 = new Timestamp(new Date().getTime());
 		
-	    System.out.println(sentTime.toString());
+//	    System.out.println(sentTime.toString());
 	    
 	    String sentDateString = sentTime.toString();
-	    String endDate = timestamp2.toString();
-	    System.out.println(sentTime.before(timestamp2));
 
 	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
 	    Date start = sdf.parse(sentDateString);
-	    Date end = sdf.parse(endDate);
-	    System.out.println(start.compareTo(end));
-	    
-System.out.println(start);
-System.out.println(end);
-	
-if (start.compareTo(end) > 0) {
-    System.out.println("start is after end");
-} else if (start.compareTo(end) < 0) {
-    System.out.println("start is before end");
-} else if (start.compareTo(end) == 0) {
-    System.out.println("start is equal to end");
-} else {
-    System.out.println("Something weird happened...");
-}
+	    //System.out.println(start);
 	    
 	    
 	    
-	    key = key+1;
-		stringValue = "value"+key;
+	    key = updateKey;
+		stringValue = updatedValue;
 		/*
 		mapValue.add(stringValue);
 		consistentMap.put(key, mapValue);
@@ -213,6 +216,115 @@ if (start.compareTo(end) > 0) {
 		
 	}
 	
+	public static void read(String branchName,String readIp,int readPort,int readKey){
+	
+		try{
+			Socket socket = new Socket(readIp, readPort);
+			
+			Bank.BranchMessage.Builder messageBuilder = Bank.BranchMessage.newBuilder();
+			Bank.Read.Builder read = Bank.Read.newBuilder()
+					.setKey(readKey)
+					.setReadflag(1);
+			read.build();
+			messageBuilder.setRead(read);
+			Bank.BranchMessage message = messageBuilder.build();
+			message.writeDelimitedTo(socket.getOutputStream());
+
+//			OutputStream os = socket.getOutputStream();
+//			OutputStreamWriter osw = new OutputStreamWriter(os);
+//			BufferedWriter bw = new BufferedWriter(osw);
+//
+//			String number = "retreivesnapshot 2";
+//
+//			String sendMessage = number + "\n";
+//			bw.write(sendMessage);
+//			bw.flush();
+			
+
+			InputStream is = socket.getInputStream();
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String inmessage = br.readLine();
+			System.out.println("==> Controller received Message from the server : "
+					+ inmessage);
+
+			socket.close();
+		}
+		catch(Exception e){}
+
+	}
+	
+	public static void put(int putKey, String putValue){
+		
+		try {
+
+		Branches getRandomBranch = getRandombranch();
+		String toBranchName = getRandomBranch.getName();
+		String toIpAddress = getRandomBranch.getIp();
+		int toPort = getRandomBranch.getPort();
+		System.out.println("==> Put Chosen Coordinator - -> " + toPort + " : "+ toBranchName);
+		Timestamp sentTime = new Timestamp(new Date().getTime());
+//	    Thread.sleep(1000);
+		Timestamp timestamp2 = new Timestamp(new Date().getTime());
+		
+//	    System.out.println(sentTime.toString());
+	    
+	    String sentDateString = sentTime.toString();
+	    String endDate = timestamp2.toString();
+//	    System.out.println(sentTime.before(timestamp2));
+
+//	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+//	    Date start = sdf.parse(sentDateString);
+//	    Date end = sdf.parse(endDate);
+
+	    //	    System.out.println(start.compareTo(end));
+	    
+//System.out.println(start);
+//System.out.println(end);
+	
+//if (sentTime.compareTo(timestamp2) > 0) {
+//    System.out.println("start is after end");
+//} else if (start.compareTo(end) < 0) {
+//    System.out.println("start is before end");
+//} else if (start.compareTo(end) == 0) {
+//    System.out.println("start is equal to end");
+//} else {
+//    System.out.println("Something weird happened...");
+//}
+	    
+	    
+	    
+//	    key = key+1;
+//		stringValue = "value"+key;
+		/*
+		mapValue.add(stringValue);
+		consistentMap.put(key, mapValue);
+		consistentString = stringValue;
+		*/
+		Bank.BranchMessage.Builder messageBuilder = Bank.BranchMessage.newBuilder();
+		Bank.Transfer.Builder transfer = Bank.Transfer.newBuilder()
+				.setKey(putKey)
+				.setValue(putValue)
+				.setTime(sentDateString)
+				.setFlag(1);
+		transfer.build();
+		messageBuilder.setTransfer(transfer);
+		Bank.BranchMessage message = messageBuilder.build();
+
+			Socket socket = new Socket(toIpAddress,toPort);
+			
+			//sends message to Coordinator -> what if coordinator is down ?
+			message.writeDelimitedTo(socket.getOutputStream());
+			
+			socket.close();
+
+		}
+		catch(Exception e){
+			System.out.println("Servers are Down ! No Server to connect. Please try again later!");
+		}
+		
+	}
+	
 	public static Branches getRandombranch() {
 
 		Random random = new Random();
@@ -224,44 +336,10 @@ if (start.compareTo(end) > 0) {
 		return branchToTransfer;
 	}
 
-	public static boolean isHostRunning(String serverIP, int serverPort) { 
-	    try (Socket socket = new Socket( serverIP , serverPort)) {
-	    	System.out.println("in check try");
-	        return true;
-	    } catch (IOException ex) {
-	        /* ignore */
-	    }
-	    return false;
-	}
-	   public static boolean hostAvailabilityCheck(String SERVER_ADDRESS, int TCP_SERVER_PORT) throws UnknownHostException, IOException
-	   { 
-	       socket = new Socket(SERVER_ADDRESS, TCP_SERVER_PORT);
-	       boolean available = true; 
-	       try {               
-	           if (socket.isConnected())
-	           { socket.close();    
-	           }               
-	           } 
-	       catch (UnknownHostException e) 
-	           { // unknown host 
-	           available = false;
-	           socket = null;
-	           } 
-	       catch (IOException e) { // io exception, service probably not running 
-	           available = false;
-	           socket = null;
-	           } 
-	       catch (NullPointerException e) {
-	           available = false;
-	           socket=null;
-	       }
-
-
-	       return available;   
-	   } 
 	public static void initialize(Bank.BranchMessage message){
 		
-			for (Branches branch : branchesList) {
+
+		for (Branches branch : branchesList) {
 //				System.out.println(branch.name + " " + branch.ip + " "
 //						+ branch.port + "\n");
 					boolean isRunning = false;
@@ -272,13 +350,13 @@ if (start.compareTo(end) > 0) {
 						message.writeDelimitedTo(socket.getOutputStream());
 					}
 					else{
-						System.out.println(" after check try " );
+						
 					}
 
 			}
 					catch(IOException e)
 					{
-						System.out.println("Prabhakar not running : "+branch.getIp() + ":"+branch.getPort());
+						System.out.println("==> Initialize Server not running : "+branch.getIp() + ":"+branch.getPort());
 					}
 					finally{
 						try{					

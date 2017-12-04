@@ -1,10 +1,8 @@
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Scanner;
+import java.io.InputStreamReader;
 
 public class FileProcessor {
 
@@ -20,11 +18,11 @@ public class FileProcessor {
 	public void openfile(){
 		try {
 			File file = new File(inFile);
-			fileInput  = new FileInputStream(file);
 			if(file.exists()){
+			fileInput  = new FileInputStream(file);
 			bufferedReader = new BufferedReader(new InputStreamReader(fileInput));}
 			else{
-				System.out.println("Files does not exist");
+				//System.out.println(file + " file does not exist");
 			}
 		}catch(Exception e){
 			e.printStackTrace();

@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+message InitBranch {
+  uint32 balance=1;
+  uint32 consistencylevel=2;   
+
+  message Branch {
+    string name=1;
+    string ip=2;
+    uint32 port=3;
+  }
+
+  repeated Branch all_branches=3;
+}
+
+message Transfer {
+  uint32 key = 1;
+  string value=2;
+  string time=3;
+  uint32 flag=4;
+}
+
+message Decision {
+  uint32 key = 1;
+  string value=2;
+  string time=3;
+  uint32 flag=4;
+  string decide=5;
+}
+
+message Hint {
+    string name=1;
+    string ip=2;
+    uint32 port=3;
+}
+
+message Read {
+    uint32 key=1;
+    uint32 readflag=2;
+    string readmethod=3;
+    string readbranchname=4;
+    string readbranchip=5;
+    uint32 readbranchport=6;    
+}
+
+message BranchMessage {
+  oneof branch_message {
+    InitBranch init_branch = 1;
+    Transfer transfer = 2;
+    Read read = 3;
+    Decision decision = 4;
+  }
+}
+
