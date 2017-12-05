@@ -14,8 +14,8 @@ import java.util.Random;
 
 
 
-public class Controller {
-
+public class Controller 
+{
 	public static String consistency_level = null;
 	private static List<Branches> branchesList = new ArrayList<Branches>();
 	private static Socket socket;
@@ -26,47 +26,38 @@ public class Controller {
 	private static ArrayList<String> mapValue = new ArrayList<String>();
 	public static Map<Integer,ArrayList<String>> consistentMap = new HashMap<Integer,ArrayList<String>>();
 	public static int consistency = 0;
+	private static String coordinatorBranchName = "";
+	private static String coordinatorIpAddress = "";
+	private static int coordinatorPort = -1;
 
 	public static void main(String args[]) 
 	{
 		System.out.println("Client started...");
 
-		if (args.length < 3) {
-			System.out.println("Minimum Arguments missing ");
-			return;
-		}
-		consistency_level = args[0];
-		String fileName = args[1];
-		String operation = args[2];
-
-		String branchName = null;
-		String ipAddress = null;
-		String portNumber = null;
-
+		BufferedReader buff = new BufferedReader(new InputStreamReader(System.in));
+		Bank.BranchMessage message = null;
 		try 
 		{
-			//File curDir = new File("");
-			//String currentFilePath = curDir.getAbsolutePath();
-			//File readFile = new File(fileName);
+			System.out.println("Enter Consistency Level");
+			consistency_level = buff.readLine();
+
+			System.out.println("\nEnter Branch Description File Path with FileName");
+			String fileName = buff.readLine();
+
+			String branchName = null;
+			String ipAddress = null;
+			String portNumber = null;
+
 			FileProcessor fp = new FileProcessor(fileName);
 			fp.openfile();
-			//			System.out.println(fileName);
-			// BufferedReader reader = new BufferedReader(new
-			// FileReader(readFile));
 
 			String line = null;
-			//			System.out.println("Printing lines in branch text file");
 			Bank.InitBranch.Builder initBranch = Bank.InitBranch.newBuilder().setConsistencylevel(Integer.parseInt(consistency_level));
 			Bank.BranchMessage.Builder messageBuilder = Bank.BranchMessage.newBuilder();
 
-			while ((line = fp.readLine()) != null) 
+			while ((line = fp.readLine()) != null)  
 			{
-				// System.out.println(line);
 				String[] lineArr = line.split(" ");
-				// System.out.println(lineArr);
-				//				 System.out.println("1st string: " + lineArr[0]);
-				//				 System.out.println("2nd string: " + lineArr[1]);
-				//				 System.out.println("3nd string: " + lineArr[2]);
 
 				branchName = lineArr[0];
 				ipAddress = lineArr[1];
@@ -87,46 +78,125 @@ public class Controller {
 			}//while
 
 			messageBuilder.setInitBranch(initBranch);
-			Bank.BranchMessage message = messageBuilder.build();
+			message = messageBuilder.build();
+			initialize(message);
 
-			/*			int hasConsistency = checkConsistency();
-			if( (hasConsistency < Integer.parseInt(consistency_level))){
-				System.out.println(hasConsistency + " Exiting !! Servers are down !!" + consistency_level);
-				System.exit(0);
-			}
-			 */		
-			if(operation.equals("init"))
-			{
-				initialize(message);
-			}
 
-			if(operation.equals("put"))
+			int counter = 0;
+			while(true)
 			{
-				//testing flow
-				int putKey = Integer.parseInt(args[3]);
-				String putValue = args[4];
-				put(putKey,putValue);
-			}
+				System.out.println("\nSelect the operation to be performed:\n 1. Put\n 2. Update\n 3. Read\n 4. Change Consistency Level\n 5. Exit");
+				String choice = "";
 
-			if(operation.equals("update"))
-			{
-				int updateKey = Integer.parseInt(args[3]);
-				update(updateKey,args[4]);
-			}
+				while(choice.equals("") || choice.matches("\\s+"))
+				{
+					choice = buff.readLine();
+				}
 
-			if(operation.equals("read"))
-			{
-				String readBranch = args[3];
-				String readIp = args[4];
-				int readPort = Integer.parseInt(args[5]);
-				int readKey = Integer.parseInt(args[6]);
-				read(readBranch,readIp,readPort,readKey);
+				int operationNo = Integer.parseInt(choice);
+
+				switch(operationNo)
+				{
+				/*case 1:
+					if(0 == counter)
+					{
+						initialize(message);
+						counter++;
+					}
+					else
+					{
+						System.out.println("Already Initialized, Try Some Other Operation.\n");
+					}
+					break;*/
+
+				case 1:
+					if(0 == counter)
+					{
+						selectCoordinator();
+						counter++;
+					}
+					System.out.println("Enter Key");
+					String key = "";
+
+					while(key.equals("") || key.matches("\\s+"))
+					{
+						key = buff.readLine();
+					}
+
+					int putKey = Integer.parseInt(key);
+
+					System.out.println("Enter Value");
+					String putValue = buff.readLine();
+
+					put(putKey, putValue);
+					break;
+
+				case 2:
+					if(0 == counter)
+					{
+						selectCoordinator();
+						counter++;
+					}
+					System.out.println("Enter Key To Update");
+					key = "";
+
+					while(key.equals("") || key.matches("\\s+"))
+					{
+						key = buff.readLine();
+					}
+
+					int updateKey = Integer.parseInt(key);
+
+					System.out.println("Enter New Value");
+					String updateValue = buff.readLine();
+
+					update(updateKey, updateValue);
+					break;
+
+
+				case 3:
+					if(0 == counter)
+					{
+						selectCoordinator();
+						counter++;
+					}
+					System.out.println("Enter Branch Name to Read from");
+					String readBranch = buff.readLine();
+
+					System.out.println("Enter Key to Read");
+
+					key = "";
+					while(key.equals("") || key.matches("\\s+"))
+					{
+						key = buff.readLine();
+					}
+
+					int readKey = Integer.parseInt(key);
+
+					read(readBranch, readKey);
+					break;
+
+				case 4:
+					System.out.println("Enter New Consistency Level\n");
+					consistency_level = buff.readLine();
+					break;
+
+				case 5:
+					System.out.println("Client Stopping");
+					System.exit(1);
+
+				default:
+					System.out.println("Invalid Selection, Please select a number from the given choices");
+				}
 			}
 
 		}
-		catch(Exception e){e.printStackTrace();}
-
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
+
 	/*	
 	public static int checkConsistency(){
 		int localConsistency = 0;
@@ -159,15 +229,19 @@ public class Controller {
 
 	}
 	 */
+	public static void selectCoordinator()
+	{
+		Branches getRandomBranch = getRandombranch();
+		coordinatorBranchName = getRandomBranch.getName();
+		coordinatorIpAddress = getRandomBranch.getIp();
+		coordinatorPort = getRandomBranch.getPort();
+		System.out.println("Chosen Coordinator --> " + coordinatorBranchName);
+	}
+
 	public static void update(int updateKey,String updatedValue)
 	{	
 		try
 		{
-			Branches getRandomBranch = getRandombranch();
-			String toBranchName = getRandomBranch.getName();
-			String toIpAddress = getRandomBranch.getIp();
-			int toPort = getRandomBranch.getPort();
-			System.out.println("==> Update Chosen Coordinator - - > " + toPort + " : "+ toBranchName);
 			Timestamp sentTime = new Timestamp(new Date().getTime());
 
 			//	    System.out.println(sentTime.toString());
@@ -194,7 +268,7 @@ public class Controller {
 			messageBuilder.setTransfer(transfer);
 			Bank.BranchMessage message = messageBuilder.build();
 
-			Socket socket = new Socket(toIpAddress,toPort);
+			Socket socket = new Socket(coordinatorIpAddress, coordinatorPort);
 
 			//sends message to Coordinator -> what if coordinator is down ?
 			message.writeDelimitedTo(socket.getOutputStream());
@@ -206,53 +280,55 @@ public class Controller {
 
 	}
 
-	public static void read(String branchName,String readIp,int readPort,int readKey)
+	public static void read(String branchName, int readKey)
 	{
+		String readIp = "";
+		int readPort = 0;
 		try
 		{
-			Socket socket = new Socket(readIp, readPort);
+			for(Branches b : branchesList)
+			{
+				if(b.getName().equals(branchName))
+				{
+					readIp = b.getIp();
+					readPort = b.getPort();
+					break;
+				}
+			}
 
-			Bank.BranchMessage.Builder messageBuilder = Bank.BranchMessage.newBuilder();
-			Bank.Read.Builder read = Bank.Read.newBuilder()
-					.setKey(readKey)
-					.setReadflag(1);
-			read.build();
-			messageBuilder.setRead(read);
-			Bank.BranchMessage message = messageBuilder.build();
-			message.writeDelimitedTo(socket.getOutputStream());
+			if(!readIp.equals("") && readPort != 0)
+			{
+				Socket socket = new Socket(readIp, readPort);
 
-			//			OutputStream os = socket.getOutputStream();
-			//			OutputStreamWriter osw = new OutputStreamWriter(os);
-			//			BufferedWriter bw = new BufferedWriter(osw);
-			//
-			//			String number = "retreivesnapshot 2";
-			//
-			//			String sendMessage = number + "\n";
-			//			bw.write(sendMessage);
-			//			bw.flush();
+				Bank.BranchMessage.Builder messageBuilder = Bank.BranchMessage.newBuilder();
+				Bank.Read.Builder read = Bank.Read.newBuilder()
+						.setKey(readKey)
+						.setReadflag(1);
+				read.build();
+				messageBuilder.setRead(read);
+				Bank.BranchMessage message = messageBuilder.build();
+				message.writeDelimitedTo(socket.getOutputStream());
 
+				InputStream is = socket.getInputStream();
+				InputStreamReader isr = new InputStreamReader(is);
+				BufferedReader br = new BufferedReader(isr);
+				String inmessage = br.readLine();
+				System.out.println("==> Message received from the server :\n"+ inmessage + "\n");
 
-			InputStream is = socket.getInputStream();
-			InputStreamReader isr = new InputStreamReader(is);
-			BufferedReader br = new BufferedReader(isr);
-			String inmessage = br.readLine();
-			System.out.println("==> Controller received Message from the server : "+ inmessage);
-			
-			socket.close();
+				socket.close();
+			}
+			else
+			{
+				System.err.println("No Such Branch exists with name: "+branchName + " , cannot complete read.");
+			}
 		}
 		catch(Exception e){}
-
 	}
 
 	public static void put(int putKey, String putValue)
 	{
 		try
 		{
-			Branches getRandomBranch = getRandombranch();
-			String toBranchName = getRandomBranch.getName();
-			String toIpAddress = getRandomBranch.getIp();
-			int toPort = getRandomBranch.getPort();
-			System.out.println("==> Put Chosen Coordinator - -> " + toPort + " : "+ toBranchName);
 			Timestamp sentTime = new Timestamp(new Date().getTime());
 			//	    Thread.sleep(1000);
 			Timestamp timestamp2 = new Timestamp(new Date().getTime());
@@ -301,7 +377,7 @@ public class Controller {
 			messageBuilder.setTransfer(transfer);
 			Bank.BranchMessage message = messageBuilder.build();
 
-			Socket socket = new Socket(toIpAddress,toPort);
+			Socket socket = new Socket(coordinatorIpAddress, coordinatorPort);
 
 			//sends message to Coordinator -> what if coordinator is down ?
 			message.writeDelimitedTo(socket.getOutputStream());
@@ -313,13 +389,12 @@ public class Controller {
 		{
 			System.out.println("Servers are Down ! No Server to connect. Please try again later!");
 		}
-
 	}
 
 	public static Branches getRandombranch() 
 	{
 		Random random = new Random();
-		int randomIndex = random.nextInt(branchesList.size() - 0);
+		int randomIndex = random.nextInt(branchesList.size());
 		Branches branchToTransfer = branchesList.get(randomIndex);
 
 		return branchToTransfer;
@@ -329,10 +404,6 @@ public class Controller {
 	{
 		for (Branches branch : branchesList)
 		{
-			//				System.out.println(branch.name + " " + branch.ip + " "
-			//						+ branch.port + "\n");
-			//boolean isRunning = false;
-			//isRunning = isHostRunning(branch.getIp(), branch.getPort());
 			try
 			{
 				socket = new Socket(branch.getIp(), branch.getPort());

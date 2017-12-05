@@ -85,6 +85,7 @@ public class Branch
 			{
 				System.out.println("Replica Recovering!!!");
 				rebootCaller();
+				System.out.println("Replica Recovered!!!");
 			}
 			//2>and also pings other replicas to get hints from them
 			//			getHints();//how to get branchList
@@ -478,10 +479,17 @@ public class Branch
 										BufferedWriter bw = new BufferedWriter(osw);
 
 										//check the consistentMap output ->  checkthis
-										String number = "returningValue ";
+										//String number = "returningValue ";
 										//System.out.println("Incoming Read Key :: "+readKey+"-- == Sending to coordinator returningValue from "+replicaName+":"+ ipAddress+ ":"+portNumber +" || "+number+" | " + consistentMap.get(readKey));
-
-										String sendMessage = consistentMap.get(readKey) + "\n";
+										String sendMessage = "";
+										if(consistentMap.containsKey(readKey))
+										{
+											sendMessage = consistentMap.get(readKey) + "\n";
+										}
+										else
+										{
+											sendMessage = "not found"+"\n";
+										}
 										bw.write(sendMessage);
 										bw.flush();
 									}
@@ -543,7 +551,7 @@ public class Branch
 													Date currDate = null;
 													//System.out.println("Branch Cordinator received Message from the server : " + branch.getPort()+"\n"+ inmessage);
 													
-													if(consistentMap.get(readKey) == null)
+													if(consistentMap.get(readKey) == null && !inmessage.equals("not found"))
 													{
 														//System.out.println("No such key value pair available with me !");
 
@@ -554,6 +562,18 @@ public class Branch
 														SimpleDateFormat rsdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
 														currDate = rsdf.parse(valueTime);
 														//System.out.println(" To Time :: "+ currDate);
+													}
+													else if(consistentMap.get(readKey) == null && inmessage.equals("not found"))
+													{
+														OutputStream os = clientSocket.getOutputStream();
+														OutputStreamWriter osw = new OutputStreamWriter(os);
+														BufferedWriter bw = new BufferedWriter(osw);
+
+														String sendMessage = "No Such Key available in Map, Try another" + "\n";
+														
+														bw.write(sendMessage);
+														bw.flush();
+														return;
 													}
 													
 													if(!isCompared && consistentMap.get(readKey) != null)
@@ -683,10 +703,11 @@ public class Branch
 														updatesocket = new Socket(branch.getIp(), branch.getPort());
 														if(updatesocket.isConnected())
 														{
+															returnFinalValue = returnFinalValue.replace("[", "");
 															Bank.BranchMessage.Builder repairMessageBuilder = Bank.BranchMessage.newBuilder();
 															Bank.Decision.Builder decision = Bank.Decision.newBuilder()
 																	.setKey(readKey)
-																	.setValue(returnFinalValue.replace("[", ""))
+																	.setValue(returnFinalValue)
 																	.setTime(maxTimeString.replace("]", ""))
 																	.setFlag(0)
 																	.setDecide("readrepair");
@@ -709,10 +730,12 @@ public class Branch
 											OutputStreamWriter osw = new OutputStreamWriter(os);
 											BufferedWriter bw = new BufferedWriter(osw);
 
-											String number = "returningValue : ";
+											//String number = "returningValue : ";
 											//System.out.println("==> In Branch - returningValue + "+number + consistentMap.get(readKey));
 
-											String sendMessage = number + " :: "+ returnFinalValue +" : "+ maxDate + "\n";
+											//String sendMessage = number + " :: "+ returnFinalValue +" : "+ maxDate + "\n";
+											String sendMessage = returnFinalValue +" : "+ maxDate + "\n";
+											
 											bw.write(sendMessage);
 											bw.flush();
 										}
@@ -843,7 +866,7 @@ public class Branch
 
 	}*/
 
-	public static void sendMessage(int key, String value,String receivedTime, int receivedFlag,ArrayList<String> consistentString)
+	public static void sendMessage(int key, String value, String receivedTime, int receivedFlag, ArrayList<String> consistentString)
 	{
 		Socket socket = null;
 		//System.out.println("Sending Message --- " + branchesList.size());
