@@ -46,7 +46,7 @@ public class Branch
 			System.out.println("Arguments missing: \n./branch <branchname> <portnumber>");
 			return;
 		}
-		
+
 		replicaName = args[0];
 		portNumber = Integer.parseInt(args[1]);
 
@@ -119,7 +119,7 @@ public class Branch
 							branchesList.add(b);
 						}
 					}
-					
+
 					if(bm.hasDecision())
 					{
 						//System.out.println("===== Decision Called =====");
@@ -134,15 +134,15 @@ public class Branch
 						//System.out.println("Saving into memory "+ key + " :: "+ receivedFlag + " :: "+ value + " :: " + receivedTime );
 
 						String decision = bm.getDecision().getDecide();
-						
+
 						//System.out.println("Getting Response back from coordinator " + decision);
-						
+
 						//receive commitMessage
 						//if commitMessage == "commit" -> 
 						//call saveMapInMemory(key,consistentString) & 	consistentMap.put(key, consistentString);
 						//if commitMessage == "abort" -> do nothing 
 						//get back messages from other replicas
-						
+
 						if(decision.equals("commit"))
 						{
 							//System.out.println("got into commitmessage");
@@ -154,25 +154,25 @@ public class Branch
 							//so that when replicas restores Map when recovers
 							//it should be done for all replicas 
 						}
-						
+
 						if(decision.equals("abort"))
 						{
 							//System.out.println("Aborting Put");
 						}
-						
+
 						if(decision.equals("readrepair"))
 						{
 							//System.out.println("got into readrepair | will update all replicas with Max Updated Value");
-							
+
 							ArrayList<String> consistentValue = consistentMap.get(key);	
 							//System.out.println("Consistent value:" + consistentValue);
 							String latestValue = consistentValue.get(consistentValue.size()-1);
 							String[] split = latestValue.split(",");
-							
+
 							//System.out.println("latest value:"+latestValue);
 							//System.out.println("split 0:"+split[0]);
 							//System.out.println("split 1:"+split[1]);
-							
+
 							SimpleDateFormat rsdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
 							Date newDate = null;
 							if(split.length > 1)
@@ -184,7 +184,7 @@ public class Branch
 							{
 								newDate = rsdf.parse(split[0]);
 							}
-							
+
 							Date newDate2 = rsdf.parse(receivedTime);
 
 							if(newDate2.compareTo(newDate) > 0)
@@ -273,14 +273,14 @@ public class Branch
 
 								FileProcessor fp = new FileProcessor(branchFileName);
 								fp.openfile();
-								
+
 								String line = null;
 								OutputStream os = clientSocket.getOutputStream();
 								OutputStreamWriter osw = new OutputStreamWriter(os);
 								BufferedWriter bw = new BufferedWriter(osw);
 								String number = null;
 								number = "";
-								
+
 								while ((line = fp.readLine()) != null) 
 								{
 									String[] lineArr = line.split("\n");
@@ -399,11 +399,11 @@ public class Branch
 									String writeHintsCurrentFilePath = writeHintsCurDir.getAbsolutePath();
 									File writeFile = new File(writeHintsCurrentFilePath + "/" + "write-ahead"+replicaName+":"+ipAddress+":"+portNumber+".txt");
 									//System.out.println("----writing----"+writeFile.toString());
-									
+
 									if(!writeFile.exists()){
 										writeFile.createNewFile();
 									}
-									
+
 									FileWriter aWriter = new FileWriter(writeFile, true);
 									aWriter.write(key +"/" + consistentString + "\n");
 									aWriter.flush();
@@ -514,7 +514,7 @@ public class Branch
 									String currValueTime = null;
 									String valueTime = null;
 									String maxTimeString = null;
-									
+
 									for(Branches branch: branchesList)
 									{
 										//System.out.println("not send this MAP to me : " + portNumber + ":");
@@ -550,7 +550,7 @@ public class Branch
 
 													Date currDate = null;
 													//System.out.println("Branch Cordinator received Message from the server : " + branch.getPort()+"\n"+ inmessage);
-													
+
 													if(consistentMap.get(readKey) == null && !inmessage.equals("not found"))
 													{
 														//System.out.println("No such key value pair available with me !");
@@ -570,12 +570,12 @@ public class Branch
 														BufferedWriter bw = new BufferedWriter(osw);
 
 														String sendMessage = "No Such Key available in Map, Try another" + "\n";
-														
+
 														bw.write(sendMessage);
 														bw.flush();
 														return;
 													}
-													
+
 													if(!isCompared && consistentMap.get(readKey) != null)
 													{
 														//System.out.println("Comparing with coordinator's timestamp :" + consistentMap.get(readKey));
@@ -686,7 +686,7 @@ public class Branch
 										}
 
 									}//for loop
-									
+
 									readconsistency_count = readconsistency_count+1;
 									if(readconsistency_count >= consistency_level)
 									{
@@ -735,7 +735,7 @@ public class Branch
 
 											//String sendMessage = number + " :: "+ returnFinalValue +" : "+ maxDate + "\n";
 											String sendMessage = returnFinalValue +" : "+ maxDate + "\n";
-											
+
 											bw.write(sendMessage);
 											bw.flush();
 										}
@@ -782,7 +782,7 @@ public class Branch
 		}
 	}
 
-	
+
 	public static void rebootCaller()
 	{
 		/*System.out.println("Before populating consistentMap : -> \n");
@@ -815,17 +815,17 @@ public class Branch
 			branches.setName(lineArr[0]);
 			branches.setIp(lineArr[1]);
 			branches.setPort(Integer.parseInt(lineArr[2]));
-			
+
 			branchesList.add(branches);
 		}// while
 
 		String branchFileName = "write-ahead"+replicaName+":"+ipAddress+":"+portNumber+".txt";
 		//File readFile = new File(branchFileName);
-		
+
 		FileProcessor fp = new FileProcessor(branchFileName);
 		fp.openfile();
 		String line = null;
-		
+
 		while ((line = fp.readLine()) != null) 
 		{
 			String[] lineArr = line.split("\n");
@@ -841,7 +841,7 @@ public class Branch
 	}
 
 	//all servers have to be active initially
-/*	public static void getHints()
+	/*	public static void getHints()
 	{
 		for(Branches branch: branchesList)
 		{
@@ -854,7 +854,7 @@ public class Branch
 		}
 	}*/
 
-/*	public static void putCurrent(Bank.BranchMessage bm){
+	/*	public static void putCurrent(Bank.BranchMessage bm){
 
 		//check for active replicas first
 		//if number of replicas > consisteny level - OK
@@ -900,7 +900,7 @@ public class Branch
 					BufferedReader br = new BufferedReader(isr);
 					String inmessage = br.readLine();
 					//System.out.println("----------Got Response from Server"+inmessage+"----------");
-					
+
 					if(inmessage.equals("OK"))
 					{
 						consistency_count = consistency_count + 1;
@@ -935,16 +935,16 @@ public class Branch
 						aWriter.close();
 
 
-						int hintKey = key;
+						/*int hintKey = key;
 						String hintValue = value;
 						String hintTime = receivedTime;
-						//					ArrayList<String> consistentString = new ArrayList<String>();
-						//					consistentString.add(value);
-						//					consistentString.add(receivedTime);
-						//					Hints hints = new Hints();
-						//					hints.setKey(key);
-						//					hints.setValue(value);
-						//					hints.setTime(receivedTime);
+						ArrayList<String> consistentString = new ArrayList<String>();
+						consistentString.add(value);
+						consistentString.add(receivedTime);
+						Hints hints = new Hints();
+						hints.setKey(key);
+						hints.setValue(value);
+						hints.setTime(receivedTime);*/
 						hintsMap.put(key, consistentString);
 					}
 					catch(Exception he){}
